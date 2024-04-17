@@ -1,4 +1,6 @@
 {
+    ;; To execute changes after an update do this file, go back to ~./config and type 'goku'
+
     :profiles {
         :Default {
             :default true
@@ -46,20 +48,6 @@
             :rules [:kinesis-advantage-keyboard
                 [:##hyphen :equal_sign]
                 [:##equal_sign :hyphen]
-            ]
-        }
-
-        {   
-            :des "semicolon -> quote" 
-            :rules [:kinesis-advantage-keyboard
-                [:##semicolon :quote]
-            ]
-        }
-
-        {   
-            :des "backslash -> semicolon" 
-            :rules [:kinesis-advantage-keyboard
-                [:##backslash :semicolon]
             ]
         }
 
@@ -128,20 +116,20 @@
 
         ;;;;;;;;;;;;;;;;;;;;; KINESIS ONLY: MOVING ESCAPE, TABS AND LARGE THUMB KEYS TO COMBOS
 
-        {
-            :des "simultaneous s d -> hyper, or escape if alone" 
-            :rules [:kinesis-advantage-keyboard
-                [[:s :d] :!S!O!Tleft_command nil { :alone :escape }]
-            ]
-        }
-        {
-            :des "simultaneous w e -> shift+tab, x c -> tab" 
-            :rules [:kinesis-advantage-keyboard
-                [[:w :e] :!Stab]
-                [[:x :c] :tab]
-                ;; For Command + Tab, see g-mode
-            ]
-        }           
+        ;; {
+        ;;     :des "simultaneous s d -> hyper, or escape if alone" 
+        ;;     :rules [:kinesis-advantage-keyboard
+        ;;         [[:s :d] :!S!O!Tleft_command nil { :alone :escape }]
+        ;;     ]
+        ;; }
+        ;; {
+        ;;     :des "simultaneous w e -> shift+tab, x c -> tab" 
+        ;;     :rules [:kinesis-advantage-keyboard
+        ;;         [[:w :e] :!Stab]
+        ;;         [[:x :c] :tab]
+        ;;         ;; For Command + Tab, see g-mode
+        ;;     ]
+        ;; }           
         {
             :des "simultaneous i o -> delete_forward, combines with d and f as Option and Command" 
             :rules [:kinesis-advantage-keyboard
@@ -171,7 +159,6 @@
                  [:##z ["open '/Applications/Zoom.us.app'"]]
                  [:##a ["open '/Applications/Omnifocus.app'"]]
                  [:##t ["open '/Applications/iTerm.app'"]]
-                 [:##x ["open '/Applications/Keyboard Maestro.app'"]]
                  [:##q ["open '/Users/jfhector/Desktop/buffer.md'"]]
                 ]
          }
@@ -263,7 +250,6 @@
                  [:##j :!Sreturn_or_enter] ; Command return
                  [:##k :!Oreturn_or_enter] ; Alt return
                  [:##l :vk_none]
-                 [:##semicolon [:!Sh :e :c :t :o :r :9 :9 :0 :1 :1 :2 :5]]
 
                  [:##n :vk_none]
                  [:##m :vk_none]
