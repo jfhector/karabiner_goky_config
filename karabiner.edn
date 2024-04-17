@@ -1,0 +1,276 @@
+{
+    :profiles {
+        :Default {
+            :default true
+            :sim     50     ;; simultaneous_threshold_milliseconds (def: 50)
+                            ;; if keydown event for two different keys are pressed within :sim ms, the keypresses are considered simultaneous
+            
+            :delay   150    ;; to_delayed_action_delay_milliseconds (def: 500)
+                            ;; after :delay ms, the key press is considered to be delayed (used for double-press macros)
+            
+            :alone   500    ;; to_if_alone_timeout_milliseconds (def: 1000)
+                            ;; if keyup event comes within :alone ms from keydown, the key is not just pressed but held
+            
+            :held    500    ;; to_if_held_down_threshold_milliseconds (def: 500)
+                            ;; key is fired twice when :held ms is elapsed (otherwise seen as a hold command) (TODO WHAT IS THIS??)
+        }
+        ; I also have another profile, with the settings I had created up to April 2023 before using Goku. They are basic and work very well.
+    }
+
+    :devices {
+        :kinesis-advantage-keyboard [{:product_id 258 :vendor_id 10730}]
+    }
+
+    :simlayers {
+        :z-mode {:key :z}
+        :c-mode {:key :c}
+        :v-mode {:key :v}
+        :g-mode {:key :g}
+
+        :h-mode {:key :h}
+    }
+    
+    :main [
+
+        {   
+            :des "arrows" 
+            :rules [:kinesis-advantage-keyboard
+                [:##up_arrow :left_arrow]
+                [:##open_bracket :up_arrow]
+                [:##close_bracket :right_arrow]
+            ]
+        }
+
+        {   
+            :des "hyphen <-> equal_sign" 
+            :rules [:kinesis-advantage-keyboard
+                [:##hyphen :equal_sign]
+                [:##equal_sign :hyphen]
+            ]
+        }
+
+        {   
+            :des "semicolon -> quote" 
+            :rules [:kinesis-advantage-keyboard
+                [:##semicolon :quote]
+            ]
+        }
+
+        {   
+            :des "backslash -> semicolon" 
+            :rules [:kinesis-advantage-keyboard
+                [:##backslash :semicolon]
+            ]
+        }
+
+        ;;;;;;;;;;;;;;;;;;;;; THUMB KEYS
+
+        {   
+            :des "page_down -> fn" 
+            :rules [:kinesis-advantage-keyboard
+                [:##page_down :fn]
+            ]
+        }
+        
+        {   
+            :des "end -> fn" 
+            :rules [:kinesis-advantage-keyboard
+                [:##end :fn]
+            ]
+        }
+
+        {   
+            :des "home -> left_option" 
+            :rules [:kinesis-advantage-keyboard
+                [:##home :left_option]
+            ]
+        }
+
+        {   
+            :des "left_option -> left_command" 
+            :rules [:kinesis-advantage-keyboard
+                [:##left_option :left_command]
+            ]
+        }
+
+        {   
+            :des "right_option -> right_command"
+            :rules [:kinesis-advantage-keyboard
+                [:##right_option :right_command]
+            ]
+        }
+
+        {   
+            :des "page_up -> left_option (as a proxy for right_option)" 
+            :rules [:kinesis-advantage-keyboard
+                [:##page_up :left_option]
+            ]
+        }
+
+
+        ;;;;;;;;;;;;;;;;;;;;; MOUSE KEYS
+
+        {
+            :des "mouse keys"
+            :rules [:kinesis-advantage-keyboard
+                [:!Fs {:mkey {:x -768}}] ; https://github.com/kchen0x/k-goku/blob/master/karabiner.edn
+                [:!FRs {:mkey {:x -3072}}] ; What the modifier keys mean https://github.com/yqrashawn/GokuRakuJoudo/blob/master/tutorial.md
+                [:!Ff {:mkey {:x 768}}]
+                [:!FRf {:mkey {:x 3072}}]
+                [:!Fe {:mkey {:y -768}}]
+                [:!FRe {:mkey {:y -3072}}]
+                [:!Fd {:mkey {:y 768}}]
+                [:!FRd {:mkey {:y 3072}}]
+                [:!Fj {:pkey :button1}]
+                [:!Fk {:pkey :button2}]
+            ]
+        }
+
+        ;;;;;;;;;;;;;;;;;;;;; KINESIS ONLY: MOVING ESCAPE, TABS AND LARGE THUMB KEYS TO COMBOS
+
+        {
+            :des "simultaneous s d -> hyper, or escape if alone" 
+            :rules [:kinesis-advantage-keyboard
+                [[:s :d] :!S!O!Tleft_command nil { :alone :escape }]
+            ]
+        }
+        {
+            :des "simultaneous w e -> shift+tab, x c -> tab" 
+            :rules [:kinesis-advantage-keyboard
+                [[:w :e] :!Stab]
+                [[:x :c] :tab]
+                ;; For Command + Tab, see g-mode
+            ]
+        }           
+        {
+            :des "simultaneous i o -> delete_forward, combines with d and f as Option and Command" 
+            :rules [:kinesis-advantage-keyboard
+                [[:i :o] :delete_forward]
+                ;; [[:d :i :o] :!Odelete_forward] TODO Use new keys for left command and alt
+                ;; [[:f :i :o] :!Cdelete_forward] TODO Use new keys for left command and alt
+            ]
+        }
+        {
+            :des "simultaneous j k -> return_or_enter" 
+            :rules [:kinesis-advantage-keyboard
+                [[:j :k] :return_or_enter]
+             ]
+        }
+
+        ;;;;;;;;;;;;;;;;;;;;; SIMLAYERS
+
+        {
+            :des "h-mode for launching applications"
+            :rules [:h-mode
+                 [:##g ["open '/Applications/Google Chrome.app'"]]
+                 [:##f ["open '/Applications/Firefox.app'"]]
+                 [:##d ["open '/Applications/Spotify.app'"]]
+                 [:##s ["open '/Applications/Slack.app'"]]
+                 [:##e ["open '/Applications/Evernote.app'"]]
+                 [:##c ["open '/Applications/Visual Studio Code.app'"]]
+                 [:##z ["open '/Applications/Zoom.us.app'"]]
+                 [:##a ["open '/Applications/Omnifocus.app'"]]
+                 [:##t ["open '/Applications/iTerm.app'"]]
+                 [:##x ["open '/Applications/Keyboard Maestro.app'"]]
+                 [:##q ["open '/Users/jfhector/Desktop/buffer.md'"]]
+                ]
+         }
+
+        {
+            :des "z-mode for media, screens and screenshots"
+            :rules [:z-mode
+                 [:##y :!Ff] ; show full screen
+                 [:##u :!CS3] ; full screenshot
+                 [:##i :!CS4] ; screenshot
+                 [:##o :!CS5] ; video recording
+                 [:##p :vk_none]
+
+                 [:##h :vk_none]
+                 [:##j :vk_none]
+                 [:##k :vk_none]
+                 [:##l :vk_none]
+                 [:##semicolon :vk_none]
+
+                 [:##n :vk_none]
+                 [:##m :play_or_pause]
+                 [:##comma :vk_none]
+                 [:##period :vk_none]
+                 [:##slash :vk_none]
+
+                 [:##up_arrow :rewind]
+                 [:##down_arrow :volume_decrement]
+                 [:##open_bracket :volume_increment]
+                 [:##close_bracket :fastforward]
+            ]
+        }
+
+        {
+            :des "c-mode for coding symbols"
+            :rules [:c-mode
+                 [:##y :grave_accent_and_tilde] ; `
+                 [:##u :!Sopen_bracket] ; {
+                 [:##i :!Sclose_bracket] ; }
+                 [:##o :!Scomma] ; <
+                 [:##p :!Speriod] ; >
+
+                 [:##h :vk_none]
+                 [:##j :!S9] ; (
+                 [:##k :!S0] ; )
+                 [:##l :!S7] ; &
+                 [:##semicolon :!Sbackslash] ; |
+
+                 [:##n :vk_none]
+                 [:##m :open_bracket] ; [
+                 [:##comma :close_bracket] ; ]
+                 [:##period :!Sgrave_accent_and_tilde] ; ~
+                 [:##slash :backslash] ; \
+            ]
+        }
+
+        {
+            :des "v-mode for punctuation and number symbols"
+            :rules [:v-mode
+                 [:##y :vk_none]
+                 [:##u :!O3] ; #
+                 [:##i :!S2] ; @
+                 [:##o :vk_none]
+                 [:##p :!S6] ; ^
+
+                 [:##h :!S5] ; %
+                 [:##j :!S3] ; £
+                 [:##k :!O2] ; €
+                 [:##l :!S4] ; $
+                 [:##semicolon :!S8] ; *
+
+                 [:##n :vk_none]
+                 [:##m :vk_none] ; mirror
+                 ;; comma default
+                 ;; period default
+                 ;; slash default
+                ]
+         }
+
+        {
+            :des "g-mode for common keyboard shortcuts"
+            :rules [:g-mode                 
+                 [:##y :vk_none]
+                 [:##u :vk_none]
+                 [:##i :vk_none]
+                 [:##o :!COclose_bracket] ; open code block
+                 [:##p :!COopen_bracket] ; close code block
+
+                 [:##h :vk_none]
+                 [:##j :!Sreturn_or_enter] ; Command return
+                 [:##k :!Oreturn_or_enter] ; Alt return
+                 [:##l :vk_none]
+                 [:##semicolon [:!Sh :e :c :t :o :r :9 :9 :0 :1 :1 :2 :5]]
+
+                 [:##n :vk_none]
+                 [:##m :vk_none]
+                 [:##comma :vk_none]
+                 [:##period :vk_none]
+                 [:##slash :vk_none]
+                ]
+         }
+    ]
+}
